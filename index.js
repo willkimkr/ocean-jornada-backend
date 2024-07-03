@@ -24,8 +24,15 @@ app.use(express.json())
 
 //create - [post] /item
 app.post('/item', function (req, res){
-  console.log(req.body)
-  res.send('create')
+  // obtemos o nome enviado no request boby
+  const item = req.body.nome
+ 
+  // inserimos o item final na lista
+  lista.push(item)
+
+  //enviamos uma menssagem de sucess0!
+  res.send('item criado com sucesso!')
+
 })
 
 //
