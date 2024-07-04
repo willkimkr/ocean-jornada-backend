@@ -5,7 +5,6 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
-
 app.get('/oi', function (req, res) {
   res.send('ola mundo!')
 })
@@ -17,7 +16,6 @@ const lista = ["rick sanches", "morty smith", "summer smith"]
 app.get('/item', function (req, res) {
   res.send(lista)
 })
-
 
 // sinalizar para o express que vamos usar json no boby
 app.use(express.json())
@@ -35,6 +33,28 @@ app.post('/item', function (req, res){
 
 })
 
-//
+//read by id - [get] /item/:id
+app.get('/item/:id', function (req, res) {
+  // acessamos o parametro de rota ID
+  const id = req.params.id
+  //acessamos o item na lista pelo indice corrigido (id - 1)
+  const item = lista[id - 1]
+  //enviamos o item obtido como resposta
+  res.send(item)
+})
+
+//update - [put]/item/:id
+app.put('/item/:id', function (req, res){
+  //acessamos o id do parametro de rota
+  const id = req.params.id
+  //acessamos o body da requisicao com os dados
+  //a serem atualizados
+  const novoItem = req.body.nome
+  //atualizamos esse novoItem
+  lista[id - 1] = novoItem
+  //enviamos uma messagem 
+  res.send('item atualizado com sucesso: '+ id)
+})
+
 
 app.listen(3000)
