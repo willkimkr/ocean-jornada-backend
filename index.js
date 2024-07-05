@@ -1,60 +1,80 @@
 const express = require('express')
+const { MongoClient } = require('mongodb')
 const app = express()
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
+const dbUrl = 'mongodb+srv://admin:wtgkTqCte1mYSjmj@cluster0.vmmbj1m.mongodb.net'
+const dbName = 'ocean-jornada-backend'
 
-app.get('/oi', function (req, res) {
-  res.send('ola mundo!')
-})
+const client = new MongoClient(dbUrl)
 
-//lista de personagens
-const lista = ["rick sanches", "morty smith", "summer smith"]
-
-// read all- [get] /item
-app.get('/item', function (req, res) {
-  res.send(lista)
-})
-
-// sinalizar para o express que vamos usar json no boby
-app.use(express.json())
-
-//create - [post] /item
-app.post('/item', function (req, res){
-  // obtemos o nome enviado no request boby
-  const item = req.body.nome
- 
-  // inserimos o item final na lista
-  lista.push(item)
-
-  //enviamos uma menssagem de sucess0!
-  res.send('item criado com sucesso!')
-
-})
-
-//read by id - [get] /item/:id
-app.get('/item/:id', function (req, res) {
-  // acessamos o parametro de rota ID
-  const id = req.params.id
-  //acessamos o item na lista pelo indice corrigido (id - 1)
-  const item = lista[id - 1]
-  //enviamos o item obtido como resposta
-  res.send(item)
-})
-
-//update - [put]/item/:id
-app.put('/item/:id', function (req, res){
-  //acessamos o id do parametro de rota
-  const id = req.params.id
-  //acessamos o body da requisicao com os dados
-  //a serem atualizados
-  const novoItem = req.body.nome
-  //atualizamos esse novoItem
-  lista[id - 1] = novoItem
-  //enviamos uma messagem 
-  res.send('item atualizado com sucesso: '+ id)
-})
+async function main() {
+  console.log('conectando ao banco de dados...')
+  await client.connect()
+  console.log('banco de dados conectado com sucesso!')
 
 
-app.listen(3000)
+
+
+
+
+  app.get('/', function (req, res) {
+    res.send('Hello World')
+  })
+
+  app.get('/oi', function (req, res) {
+    res.send('ola mundo!')
+  })
+
+  //lista de personagens
+  const lista = ["rick sanches", "morty smith", "summer smith"]
+
+  // read all- [get] /item
+  app.get('/item', function (req, res) {
+    res.send(lista)
+  })
+
+  // sinalizar para o express que vamos usar json no boby
+  app.use(express.json())
+
+  //create - [post] /item
+  app.post('/item', function (req, res) {
+    // obtemos o nome enviado no request boby
+    const item = req.body.nome
+
+    // inserimos o item final na lista
+    lista.push(item)
+
+    //enviamos uma menssagem de sucess0!
+    res.send('item criado com sucesso!')
+
+  })
+
+  //read by id - [get] /item/:id
+  app.get('/item/:id', function (req, res) {
+    // acessamos o parametro de rota ID
+    const id = req.params.id
+    //acessamos o item na lista pelo indice corrigido (id - 1)
+    const item = lista[id - 1]
+    //enviamos o item obtido como resposta
+    res.send(item)
+  })
+
+  //update - [put]/item/:id
+  app.put('/item/:id', function (req, res) {
+    //acessamos o id do parametro de rota
+    const id = req.params.id
+    //acessamos o body da requisicao com os dados
+    //a serem atualizados
+    const novoItem = req.body.nome
+    //atualizamos esse novoItem
+    lista[id - 1] = novoItem
+    //enviamos uma messagem 
+    res.send('item atualizado com sucesso: ' + id)
+  })
+
+
+  app.listen(3000)
+}
+
+
+main()
