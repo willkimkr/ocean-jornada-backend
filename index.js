@@ -12,11 +12,6 @@ async function main() {
   await client.connect()
   console.log('banco de dados conectado com sucesso!')
 
-
-
-
-
-
   app.get('/', function (req, res) {
     res.send('Hello World')
   })
@@ -28,9 +23,16 @@ async function main() {
   //lista de personagens
   const lista = ["rick sanches", "morty smith", "summer smith"]
 
+  const db = client.db(dbName)
+  const collection = db.collection('item')
+
   // read all- [get] /item
-  app.get('/item', function (req, res) {
-    res.send(lista)
+  app.get('/item', async function (req, res) {
+    //obter todos os documentos da collection
+    const documentos = await collection.find().toArray()
+
+    //pegamos os documentos e enviamos como resposta HTTP
+    res.send(documentos)
   })
 
   // sinalizar para o express que vamos usar json no boby
